@@ -1,4 +1,3 @@
-
 <h1 align="center">🚀 Interviewy – AI Interview Preparation Chatbot</h1>
 <h3 align="center">Your Complete AI-Powered Mock Interview & Career Prep Platform</h3>
 
@@ -156,7 +155,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 Pull requests, feature ideas, and bug reports are welcome!  
 Want to collaborate or need a custom version?  
-[Open an issue](https://github.com/kashafkhann/interviewy-ai-interview-preparation-chatbot/issues) or [email me](mailto:kashafkhann@gmail.com).
+[Open an issue](https://github.com/kashafkhann/interviewy-ai-interview-preparation-chatbot/issues) or [email me](mailto:kkashaf2411@gmail.com).
 
 ---
 
