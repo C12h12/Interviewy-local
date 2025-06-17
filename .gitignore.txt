@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+# Environment variables
+.env
+.env.*
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+desktop.ini
+# VS Code
+.vscode/
+# PyCharm
+.idea/
+# Logs
+*.log
+# MySQL dump and backups
+*.sql
+*.sqlite3
+*.db
+# Node (if you ever use npm)
+node_modules/
+# Optional: screenshots or reports (if you want to ignore generated files)
+# /screenshots/
+# /reports/

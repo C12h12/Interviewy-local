@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Interviewy - Interview</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            background: linear-gradient(120deg, #0b1124 60%, #192050 100%);
+            min-height: 100vh;
+            margin: 0; padding: 0;
+            font-family: 'Space Grotesk', Arial, sans-serif;
+            color: #e0eafc;
+            font-size: 15px;
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #101526;
+            padding: 0.75rem 2.5vw 0.75rem 2.5vw;
+        }
+        .logo-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #38bdf8;
+            letter-spacing: 2px;
+        }
+        .timer-glow {
+            color: #38bdf8;
+            text-shadow: 0 0 8px #38bdf8cc, 0 0 2px #fff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .chat-main {
+            width: 100vw;
+            height: calc(100vh - 55px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .chat-messages {
+            flex: 1 1 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            padding: 2rem 0 2rem 0;
+        }
+        .msg-user, .msg-feedback, .msg-score {
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+            display: inline-block;
+            font-size: 0.97rem;
+            max-width: 60vw;
+        }
+        .msg-bot {
+            background: linear-gradient(90deg, #1e40af 10%, #6d28d9 100%);
+            color: #e0eafc;
+            padding: 0.7rem 1.1rem;
+            border-radius: 1.1rem;
+            border-bottom-left-radius: 0.25rem;
+            font-weight: 500;
+            box-shadow: 0 2px 14px #312e8170;
+            text-align: left;
+            display: inline-block;
+            position: relative;
+        }
+        .msg-user {
+            background: linear-gradient(90deg, #0ea5e9 10%, #18181b 100%);
+            color: #ecfeff;
+            padding: 0.7rem 1.1rem;
+            border-radius: 1.1rem;
+            border-bottom-right-radius: 0.25rem;
+            font-weight: 400;
+            align-self: flex-end;
+            float: right;
+            margin-left: auto;
+            box-shadow: 0 2px 10px #0ea5e944;
+            text-align: right;
+        }
+        .msg-feedback {
+            background: #19336c77;
+            border-left: 3px solid #38bdf8;
+            color: #38bdf8;
+            font-size: 0.93rem;
+            margin-left: 2.7rem;
+            padding: 0.7em 1.1em;
+            border-radius: 0.95rem;
+            max-width: 50vw;
+            box-shadow: 0 2px 8px #38bdf844;
+        }
+        .msg-score {
+            font-size: 0.92rem;
+            color: #fdba74;
+            margin-left: 2.7rem;
+        }
+        .chat-input-area {
+            width: calc(100% - 3rem);
+            margin: 0 1.5rem 1rem 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            background: #131b28fa;
+            border-radius: 1.25rem;
+            padding: 0.7rem 1.1rem;
+            align-items: flex-end;
+            box-shadow: 0 2px 14px #0ea5e945, 0 1.5px 0 0 #6366f128;
+            border: 1.3px solid #33415544;
+        }
+        .chat-input-area textarea {
+            flex: 1;
+            min-height: 36px;
+            max-height: 100px;
+            font-size: 0.97rem;
+            background: transparent;
+            border: none;
+            color: #e0eafc;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            margin: 0 0.5rem;
+            padding: 0.5rem;
+        }
+        .chat-input-area button {
+            background: linear-gradient(90deg, #38bdf8 25%, #a78bfa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 1.1rem;
+            padding: 0.65rem 1.0rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.97em;
+            transition: background 0.18s, transform 0.15s;
+            box-shadow: 0 2px 8px #0ea5e922;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .chat-input-area button:active {
+            transform: scale(0.96);
+        }
+        .chat-input-area .mic-btn {
+            background: #23244d;
+            color: #0ea5e9;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.1em;
+            transition: background 0.20s, color 0.20s;
+            box-shadow: 0 1px 8px #38bdf844;
+            padding: 0 0.7rem;
+            flex-shrink: 0;
+            height: 36px;
+            width: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-input-area .mic-btn.active {
+            background: #0ea5e9;
+            color: #fff;
+        }
+        #skipBtn {
+            background: #ed5d5d;
+            color: #fff;
+            box-shadow: 0 2px 8px #ed5d5d88;
+        }
+        .absolute {
+            position: absolute;
+        }
+        .bottom-6 { bottom: 1.5rem; }
+        .left-0 { left: 0; }
+        .right-0 { right: 0; }
+        .w-full { width: 100%; }
+        .flex { display: flex; }
+        .justify-center { justify-content: center; }
+        .z-30 { z-index: 30; }
+        .hidden { display: none; }
+        .p-3 { padding: .75rem; }
+        .rounded { border-radius: .5rem; }
+        .bg-gradient-to-r { background: linear-gradient(to right, #2563eb, #1e40af); }
+        .from-blue-700 { background: linear-gradient(to right, #2563eb, #1e40af); }
+        .to-blue-900 { background: linear-gradient(to right, #2563eb, #1e40af); }
+        .text-white { color: #fff; }
+        .text-lg { font-size: 1.0rem; }
+        .font-semibold { font-weight: 600; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px #0003; }
+        .transition-all { transition: all 0.2s; }
+        .duration-200 { transition-duration: 200ms; }
+        .ml-1 { margin-left: .25rem; }
+
+        /* Updated TTS Icon Styles */
+        .tts-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .tts-icon {
+            cursor: pointer;
+            color: #38bdf8;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            opacity: 0.7;
+            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .tts-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        .msg-bot-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 60vw;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+        }
+        @media (max-width:950px) {
+          .chat-main, .chat-input-area { width: 100vw; min-width: 0; }
+          .msg-bot-container, .msg-user, .msg-feedback, .msg-score { max-width: 75vw; }
+        }
+        @media (max-width:600px) {
+          .chat-main, .chat-input-area { width: 100vw; min-width: 0; padding: 0 2px; }
+          .msg-bot-container, .msg-user, .msg-feedback, .msg-score { 
+            margin-left: .8rem; 
+            margin-right: .8rem; 
+            max-width: 85vw;
+          }
+          .chat-input-area {
+            padding: 0.7rem;
+            gap: 0.3rem;
+            width: calc(100% - 1.6rem);
+            margin: 0 0.8rem 1rem 0.8rem;
+          }
+          .chat-input-area textarea {
+            margin: 0 0.3rem;
+            padding: 0.3rem;
+          }
+          .chat-input-area button {
+            padding: 0.65rem 0.8rem;
+            font-size: 0.9em;
+          }
+          .chat-input-area .mic-btn {
+            height: 32px;
+            width: 32px;
+            padding: 0;
+          }
+          .tts-icon {
+            font-size: 0.8rem;
+            margin-left: 6px;
+          }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <span class="logo-title">Interviewy</span>
+    <span id="timerDisplay" class="timer-glow">10:00</span>
+</header>
+<div class="chat-main" id="mainSection">
+    <div class="chat-messages" id="chatMessages"></div>
+    <form id="chatForm" class="chat-input-area mt-auto">
+        <button type="button" id="micBtn" class="mic-btn" title="Speak answer" tabindex="0">
+            <span class="material-icons-outlined">mic</span>
+        </button>
+        <textarea id="answerInput" placeholder="Type your answer here..." rows="1" required autocomplete="off"></textarea>
+        <button type="submit" id="sendBtn">Send</button>
+        <button type="button" id="skipBtn">Skip</button>
+    </form>
+</div>
+<div class="absolute bottom-6 left-0 right-0 w-full flex justify-center z-30">
+    <button id="viewFullReportBtn" class="hidden p-3 rounded bg-gradient-to-r from-blue-700 to-blue-900 text-white text-lg font-semibold shadow-lg transition-all duration-200">View Full Report <span class="material-icons-outlined ml-1">arrow_forward</span></button>
+</div>
+<script>
+const interviewId = new URLSearchParams(window.location.search).get('interviewId');
+// Updated: Redirect to result.html instead of /InterviewyApp/result.html
+if (interviewId && localStorage.getItem(`interview_completed_${interviewId}`) === "true") {
+    window.location.href = `result.html?interviewId=${encodeURIComponent(interviewId)}`;
+}
+const API_BASE = "http://127.0.0.1:5000/api";
+let questions = [];
+let currentQuestionIndex = 0;
+let totalScore = 0;
+let timeLeft = 600;
+let timerInterval;
+let currentEmail = '';
+let isRecording = false;
+let recognition;
+let interviewActive = false;
+let cheatAttemptCount = 0;
+let interviewEndedForCheating = false;
+let interviewReallyEnded = false;
+let isViewingHistory = false;
+
+// Timer + Cheating Logic
+function updateTimer() {
+    const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+    const sec = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById('timerDisplay').textContent = `${min}:${sec}`;
+}
+function startTimer() {
+    updateTimer();
+    timerInterval = setInterval(() => {
+        if (timeLeft > 0 && !isViewingHistory && !interviewEndedForCheating && !interviewReallyEnded) {
+            timeLeft--;
+            updateTimer();
+        } else if (!isViewingHistory && !interviewEndedForCheating && !interviewReallyEnded) {
+            clearInterval(timerInterval);
+            endInterview();
+        }
+    }, 1000);
+}
+function showCheatingWarning() {
+    if (cheatAttemptCount === 1) {
+        alert("Warning 1: Leaving the interview window is not allowed! This is your first warning.");
+    } else if (cheatAttemptCount === 2) {
+        alert("Warning 2: If you leave the interview window again, your interview will end and be marked as cheating!");
+    } else if (cheatAttemptCount >= 3) {
+        alert("You left the interview window three times. The interview will now end and be marked as cheating.");
+        interviewEndedForCheating = true;
+        endInterview(true);
+    }
+}
+document.addEventListener("visibilitychange", function() {
+    if (interviewActive && document.visibilityState !== "visible") {
+        cheatAttemptCount++;
+        showCheatingWarning();
+    }
+});
+
+// Fetch questions from backend
+async function fetchQuestions() {
+    if (!interviewId) {
+        alert("No interview ID found. Please start from the home page.");
+        window.location.href = "/home.html";
+        return;
+    }
+    try {
+        const res = await fetch(`${API_BASE}/interview_result?interview_id=${encodeURIComponent(interviewId)}`);
+        const data = await res.json();
+        if (data.questions && data.questions.length > 0) {
+            questions = data.questions.map(q => ({
+                question_text: q.question_text,
+                correct_answer: q.answer
+            }));
+            currentEmail = data.email;
+        } else {
+            alert("No questions found for this interview. Please start a new interview.");
+            window.location.href = "/home.html";
+        }
+    } catch (err) {
+        alert("Failed to load questions from the server.");
+        window.location.href = "/home.html";
+    }
+}
+
+// Speech to text setup
+function setupMic() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('answerInput').value = transcript;
+        };
+        recognition.onend = () => {
+            isRecording = false;
+            document.getElementById('micBtn').classList.remove('active');
+        };
+        recognition.onerror = () => {
+            isRecording = false;
+            document.getElementById('micBtn').classList.remove('active');
+        };
+    } else {
+        document.getElementById('micBtn').disabled = true;
+        document.getElementById('micBtn').title = "Microphone not supported on this browser";
+    }
+}
+setupMic();
+
+function addMessage(sender, text, type="") {
+    const chat = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    
+    if (type === "feedback") {
+        msg.className = "msg-feedback";
+        msg.innerHTML = text;
+    } else if (type === "score") {
+        msg.className = "msg-score";
+        msg.innerHTML = text;
+    } else if (sender === "bot") {
+        msg.className = "msg-bot-container";
+        msg.innerHTML = `
+            <div class="tts-container">
+                <div class="msg-bot">${text}</div>
+                <span class="tts-icon" onclick="speakOut('${text.replace(/'/g, "\\'")}')">
+                    <span class="material-icons-outlined">volume_up</span> 
+                </span>
+            </div>
+        `;
+    } else {
+        msg.className = "msg-user";
+        msg.innerHTML = text;
+    }
+    
+    chat.appendChild(msg);
+    setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 100);
+}
+
+// Text-to-speech function
+function speakOut(text) {
+    const cleanText = text.replace(/<[^>]*>/g, '');
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes('Google') || v.name.includes('English') || v.lang.includes('en-'));
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+        window.speechSynthesis.speak(utterance);
+    } else {
+        console.log("Text-to-speech not supported in this browser");
+    }
+}
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = function() { };
+}
+
+function loadInterview() {
+    interviewActive = true;
+    addMessage("bot", "👋 <b>Hi! I'm Interviewy.</b><br>Let's start your futuristic interview practice. Ready? Here's your first question!");
+    setTimeout(() => askQuestion(), 900);
+    startTimer();
+}
+
+function askQuestion() {
+    if (isViewingHistory || interviewEndedForCheating || interviewReallyEnded) return;
+    if (currentQuestionIndex >= questions.length) return endInterview();
+    addMessage("bot", `<b>Q${currentQuestionIndex+1}:</b> ${questions[currentQuestionIndex].question_text}`);
+}
+
+async function gradeAnswerBackend(userAnswer, questionIdx) {
+    try {
+        const res = await fetch(`${API_BASE}/answer_question`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                interview_id: interviewId,
+                question_index: questionIdx,
+                answer: userAnswer
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            return data;
+        } else {
+            return {
+                points: 0,
+                feedback: data.error || "Error grading.",
+                correct_answer: "",
+                total_score: totalScore
+            };
+        }
+    } catch (err) {
+        return {
+            points: 0,
+            feedback: "Could not connect to server for grading.",
+            correct_answer: "",
+            total_score: totalScore
+        };
+    }
+}
+
+async function handleSend(userAnswer) {
+    if (!userAnswer.trim() || isViewingHistory || interviewEndedForCheating || interviewReallyEnded) return;
+    const q = questions[currentQuestionIndex];
+    addMessage("user", userAnswer);
+    addMessage("bot", "<i>Assessing your answer...</i>", "feedback");
+    const grading = await gradeAnswerBackend(userAnswer, currentQuestionIndex);
+    totalScore = grading.total_score || (totalScore + grading.points);
+    document.querySelectorAll('.msg-feedback').forEach(e => e.remove());
+    document.querySelectorAll('.msg-score').forEach(e => e.remove());
+    addMessage("bot", grading.feedback || "No feedback.", "feedback");
+    addMessage("bot", `<b>Correct Answer:</b> ${grading.correct_answer || q.correct_answer || "N/A"}`, "feedback");
+    addMessage("bot", `<b>You scored:</b> ${grading.points} point${grading.points===1?"":"s"} for this answer.`, "score");
+    currentQuestionIndex++;
+    setTimeout(() => askQuestion(), 900);
+    if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 900);
+}
+
+async function handleSkip() {
+    if (isViewingHistory || interviewEndedForCheating || interviewReallyEnded) return;
+    try {
+        await fetch(`${API_BASE}/skip_question`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                interview_id: interviewId,
+                question_index: currentQuestionIndex
+            })
+        });
+    } catch (err) {}
+    addMessage("user", "<i>(Skipped)</i>");
+    addMessage("bot", "You skipped this question. No marks awarded.", "score");
+    currentQuestionIndex++;
+    setTimeout(() => askQuestion(), 700);
+    if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 700);
+}
+
+async function endInterview(forceCheatEnd = false) {
+    if (isViewingHistory || interviewReallyEnded) return;
+    interviewReallyEnded = true;
+    interviewActive = false;
+    clearInterval(timerInterval);
+    let displayScore = (forceCheatEnd || interviewEndedForCheating)
+        ? `<b>Your interview was ended due to repeated cheating/warnings and has been marked as cheating.</b><br>Your score is <b>${totalScore.toFixed(2)} out of ${questions.length}</b>.`
+        : `<b>Interview complete!</b> <br>Your final score is <b>${totalScore.toFixed(2)} out of ${questions.length}</b>.`;
+    addMessage("bot", displayScore, "score");
+    document.getElementById('viewFullReportBtn').classList.remove('hidden');
+    document.getElementById('chatForm').style.display = "none";
+    localStorage.setItem(`interview_completed_${interviewId}`, "true");
+    const chatMessages = Array.from(document.getElementById('chatMessages').children).map(msg => ({
+        sender: msg.classList.contains('msg-bot-container') ? 'bot' : (msg.classList.contains('msg-user') ? 'user' : 'bot'),
+        text: msg.innerHTML,
+        isBot: msg.classList.contains('msg-bot-container') || msg.classList.contains('msg-feedback') || msg.classList.contains('msg-score')
+    }));
+    try {
+        await fetch(`${API_BASE}/save_interview_history`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                interview_id: interviewId,
+                history: chatMessages,
+                cheated: (cheatAttemptCount >= 3) || forceCheatEnd || interviewEndedForCheating
+            })
+        });
+    } catch (err) {
+        console.error("Failed to save chat history:", err);
+    }
+}
+
+// Form and button event handlers
+document.getElementById('chatForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const input = document.getElementById('answerInput');
+    const val = input.value;
+    input.value = "";
+    await handleSend(val);
+    input.focus();
+};
+document.getElementById('skipBtn').onclick = function() {
+    handleSkip();
+};
+document.getElementById('micBtn').onclick = function() {
+    if (!recognition) {
+        alert("Microphone not supported in your browser.");
+        return;
+    }
+    if (isRecording) {
+        recognition.stop();
+        isRecording = false;
+        this.classList.remove('active');
+    } else {
+        recognition.start();
+        isRecording = true;
+        this.classList.add('active');
+    }
+};
+// Updated redirection: view full report now goes to result.html
+document.getElementById('viewFullReportBtn').onclick = function() {
+    window.location.href = `result.html?interviewId=${encodeURIComponent(interviewId)}`;
+};
+const ta = document.getElementById('answerInput');
+ta.addEventListener('input', function() {
+    this.style.height = "36px";
+    this.style.height = Math.min(this.scrollHeight, 100) + "px";
+});
+
+window.addEventListener('DOMContentLoaded', async function() {
+    await fetchQuestions();
+    loadInterview();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Interviewy - Start Interview</title>
+  <!-- Smooth modern font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Space+Grotesk%3Awght%40400%3B500%3B700&amp;family=Orbitron%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+  <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background:
+        radial-gradient(ellipse at center, rgba(17, 24, 39, 0) 0%, #111827 90%),
+        linear-gradient(135deg, #0c0c1e 0%, #1a1a3a 25%, #2a2a55 50%, #1a1a3a 75%, #0c0c1e 100%);
+      min-height: 100vh;
+      font-family: 'Inter', 'Noto Sans', 'Space Grotesk', Arial, sans-serif;
+      color: #e0eafc;
+      font-size: 15px;
+      overflow-x: hidden;
+    }
+    header {
+      font-family: 'Orbitron', 'Inter', sans-serif;
+    }
+    .glow-effect {
+      box-shadow: 0 0 15px 5px rgba(96, 165, 250, 0.5), 0 0 30px 10px rgba(96, 165, 250, 0.3);
+    }
+    .animated-gradient-text {
+      background: linear-gradient(90deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #3B82F6);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-animation 10s ease infinite;
+    }
+    @keyframes gradient-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .input-field-glow:focus {
+      border-color: #60A5FA;
+      box-shadow: 0 0 18px rgba(96, 165, 250, 0.35);
+    }
+    .select-arrow {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2360A5FA' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em;
+      padding-right: 2.5rem;
+      -webkit-appearance: none;
+    }
+    /* Keep input field color consistent on autofill/focus */
+    input, select {
+      background-color: #1a2236 !important;
+      color: #e0eafc !important;
+    }
+    input:-webkit-autofill, select:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px #1a2236 inset !important;
+      -webkit-text-fill-color: #e0eafc !important;
+    }
+    input:focus, select:focus {
+      background-color: #1a2236 !important;
+      color: #60A5FA !important;
+    }
+    .swal2-popup {
+      font-family: 'Inter', Arial, sans-serif;
+      border-radius: 14px !important;
+      background: rgba(26,34,54,0.99) !important;
+      color: #e3f2fd !important;
+      border: 1.5px solid #1976d2;
+      box-shadow: 0 4px 40px #175cff36;
+    }
+    .swal2-title {
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+    .swal2-styled.swal2-confirm {
+      background: linear-gradient(90deg, #1976d2 70%, #90caf9 120%);
+      border-radius: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="futuristic-bg text-white font-sans">
+  <div class="relative flex min-h-screen flex-col">
+    <header class="sticky top-0 bg-slate-900/30 backdrop-blur-md p-4 shadow flex justify-between items-center border-b border-b-slate-700/50">
+      <div class="flex items-center gap-3">
+        <div class="size-8 text-[#60A5FA] animate-pulse">
+          <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+            <circle class="opacity-50" cx="24" cy="24" fill="#0F172A" r="12"></circle>
+            <path class="opacity-75 animate-[spin_3s_linear_infinite]" d="M24 12 V36 M12 24 H36" stroke="#60A5FA" stroke-width="2" style="transform-origin: center;"></path>
+          </svg>
+        </div>
+        <h2 class="text-white text-xl sm:text-2xl font-bold leading-tight tracking-[-0.015em] uppercase" style="font-family: 'Orbitron', sans-serif;">Interviewy</h2>
+      </div>
+      <a href="/home.html" class="text-[#60A5FA] hover:text-white transition-colors">
+        <span class="material-icons-outlined">home</span>
+      </a>
+    </header>
+    <main class="flex-1 flex items-center justify-center py-8 px-4">
+      <div class="bg-slate-800/50 glassmorphic p-8 sm:p-12 rounded-2xl shadow-2xl w-full max-w-lg text-center border border-slate-700/50">
+        <h2 class="text-3xl font-bold text-[#60A5FA] mb-6 animated-gradient-text" style="font-family: 'Orbitron', sans-serif;">Start New Interview</h2>
+        <form id="startForm" class="space-y-4">
+          <input type="text" id="name" name="name" placeholder="Name" required autocomplete="off"
+                 class="w-full p-2 rounded bg-[#1a2236] border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 input-field-glow transition-colors duration-200">
+          <input type="email" id="email" name="email" placeholder="Email" required autocomplete="off"
+                 class="w-full p-2 rounded bg-[#1a2236] border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 input-field-glow transition-colors duration-200">
+          <input type="text" id="major" name="major" placeholder="Major" required autocomplete="off"
+                 class="w-full p-2 rounded bg-[#1a2236] border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 input-field-glow transition-colors duration-200">
+          <select id="degree_level" name="degree_level" required
+                  class="select-arrow w-full p-2 rounded bg-[#1a2236] border border-gray-600 text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 input-field-glow transition-colors duration-200">
+            <option value="" disabled selected>Degree Level</option>
+            <option value="bachelors">Bachelor's</option>
+            <option value="masters">Master's</option>
+            <option value="mphil">MPhil</option>
+            <option value="phd">PhD</option>
+            <option value="other">Other</option>
+          </select>
+          <select id="difficulty" name="difficulty" required
+                  class="select-arrow w-full p-2 rounded bg-[#1a2236] border border-gray-600 text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 input-field-glow transition-colors duration-200">
+            <option value="" disabled selected>Difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <button type="submit"
+                  class="w-full p-2 rounded bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 glow-effect">
+            Start Interview
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script>
+    const API_BASE = "http://127.0.0.1:5000/api";
+
+    // Listen to the form submit event
+    document.getElementById('startForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Gather form data
+      const form = e.target;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const major = form.major.value.trim();
+      const degree_level = form.degree_level.value;
+      const difficulty = form.difficulty.value;
+
+      // Ensure all fields are filled
+      if (!name || !email || !major || !degree_level || !difficulty) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Incomplete Information',
+          text: 'Please fill in all required fields.',
+          confirmButtonColor: '#1976d2',
+          background: 'rgba(26,34,54,0.99)',
+        });
+        return;
+      }
+
+      // Prepare data to be sent
+      const formData = { name, email, major, degree_level, difficulty };
+
+      try {
+        // Send data to backend API
+        const res = await fetch(`${API_BASE}/start_interview`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to start interview');
+
+        // On success, show a success message and redirect to int.html with interviewId
+        await Swal.fire({
+          icon: 'success',
+          title: 'Interview Setup Complete!',
+          html: `<b>Welcome, ${name}!</b><br>Your interview is ready.<br><span style="color:#60A5FA">Click OK to begin.</span>`,
+          confirmButtonColor: '#1976d2',
+          background: 'rgba(26,34,54,0.99)',
+        });
+        // Redirect using a relative path (int.html is in the same folder)
+        window.location.href = `int.html?interviewId=${data.interview_id}`;
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to Start Interview',
+          text: err.message,
+          confirmButtonColor: '#1976d2',
+          background: 'rgba(26,34,54,0.99)',
+        });
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

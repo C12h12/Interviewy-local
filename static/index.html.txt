@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Space+Grotesk%3Awght%40400%3B500%3B700&family=Orbitron%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+    <meta charset="utf-8"/>
+    <title>Stitch Design</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        .glow-effect {
+          box-shadow: 0 0 15px 5px rgba(96, 165, 250, 0.5), 0 0 30px 10px rgba(96, 165, 250, 0.3);
+        }
+        .futuristic-bg {
+          background:
+            radial-gradient(ellipse at center, rgba(17, 24, 39, 0) 0%, #111827 90%),
+            linear-gradient(135deg, #0c0c1e 0%, #1a1a3a 25%, #2a2a55 50%, #1a1a3a 75%, #0c0c1e 100%);
+        }
+        .animated-gradient-text {
+          background: linear-gradient(90deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #3B82F6);
+          background-size: 400% 400%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradient-animation 10s ease infinite;
+        }
+        @keyframes gradient-animation {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        .circuit-board-bg {
+          background-image:
+            linear-gradient(rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.98) 100%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%233B82F6' fill-opacity='0.1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h16v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h9v9h1v-9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-10 0v-9h-1v9h1zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+          background-blend-mode: overlay, normal;
+        }
+        .hero-section::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background:
+            radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+          mix-blend-mode: screen;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .card-hover-effect {
+          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card-hover-effect:hover {
+          transform: translateY(-8px) scale(1.03);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(96, 165, 250, 0.4);
+          border-color: #60A5FA;
+        }
+        .button-hover-effect:hover {
+          box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.6);
+          transform: translateY(-2px);
+        }
+        .star {
+          color: #FBBF24;
+          filter: drop-shadow(0 0 4px #FBBF24ad);
+          font-size: 1.35rem;
+          display: inline-block;
+          animation: star-pop 0.8s cubic-bezier(.61,1.56,.45,.84);
+        }
+        @keyframes star-pop {
+          0% { transform: scale(0.7); opacity: 0.2;}
+          60% { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="futuristic-bg" style='font-family: "Orbitron", "Space Grotesk", "Noto Sans", sans-serif;'>
+<div class="relative flex size-full min-h-screen flex-col text-white dark group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-slate-700/50 px-6 sm:px-10 py-4 shadow-2xl bg-slate-900/30 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3 sm:gap-4 text-white">
+<div class="size-8 text-[#60A5FA] animate-pulse">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+<circle class="opacity-50" cx="24" cy="24" fill="#0F172A" r="12"></circle>
+<path class="opacity-75 animate-[spin_3s_linear_infinite]" d="M24 12 V36 M12 24 H36" stroke="#60A5FA" stroke-width="2" style="transform-origin: center;"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl sm:text-2xl font-bold leading-tight tracking-[-0.015em] uppercase" style="font-family: 'Orbitron', sans-serif;">Interviewy</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 sm:gap-8">
+<div class="hidden sm:flex items-center gap-6 sm:gap-9">
+<a class="text-[#E0E7FF] text-sm font-medium leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group" href="/home.html">
+                  Home
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<!-- About and Contact are hidden for layout consistency -->
+<a class="text-[#E0E7FF] text-sm font-medium leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group hidden" href="#">
+                  About
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<a class="text-[#E0E7FF] text-sm font-medium leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group hidden" href="#">
+                  Contact
+                  <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<!-- Terms of Service and Privacy Policy removed as requested -->
+</div>
+<a href="/home.html" class="flex min-w-[90px] sm:min-w-[100px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 sm:px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-bold leading-normal tracking-[0.015em] hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl button-hover-effect border border-transparent hover:border-blue-400">
+<span class="truncate">Get Started</span>
+</a>
+</div>
+</header>
+<div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-10 sm:py-16">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
+<div class="@container">
+<div class="@[480px]:p-4">
+<div class="hero-section flex min-h-[580px] sm:min-h-[640px] flex-col gap-8 bg-cover bg-center bg-no-repeat @[480px]:gap-12 @[480px]:rounded-3xl items-center justify-center p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-slate-700/50 circuit-board-bg" style='background-image: linear-gradient(rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCqhdhXBgRhiBLdWj5eKhBHEqYFVzhtqaQEq_fBMYDKqpJVdnvYzGnE0PeL4WonEkdc0Rprg8Q4S6Sd4InnzAdLyqD7gIqxairbnhLxTpdZiZKjh8WIYWn8bY65fadItCvmYCfWFN3Lxhtko_iD0AqBaTr7ksACaarHEIArcazK-DwDrkNK9iiKHzrMzkEH5yCFuTuUFJV8DCCrhdPVb4obtynWiRF8gWRm3h-znQWlDPw7j-OIqoYNMPG2OivIP895WzQO2zQhtNk");'>
+<div class="flex flex-col gap-5 sm:gap-6 text-center z-10">
+<h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tight uppercase" style="font-family: 'Orbitron', sans-serif;">
+                        Ace Your Next Interview with <span class="animated-gradient-text">Interviewy</span>
+</h1>
+<h2 class="text-[#E0E7FF] text-lg sm:text-xl font-normal leading-normal @[480px]:text-xl @[480px]:font-normal @[480px]:leading-normal max-w-3xl mx-auto" style="font-family: 'Space Grotesk', sans-serif;">
+                        Prepare for your dream job with our AI-powered interview preparation chatbot. Get personalized feedback and practice with realistic interview simulations.
+                      </h2>
+</div>
+<a href="/home.html" class="flex min-w-[100px] sm:min-w-[120px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 sm:h-14 px-6 sm:px-8 bg-gradient-to-r from-sky-500 to-indigo-600 text-white text-base sm:text-lg font-bold leading-normal tracking-[0.015em] hover:from-sky-600 hover:to-indigo-700 transition-all duration-300 shadow-xl hover:shadow-2xl z-10 glow-effect button-hover-effect border border-transparent hover:border-sky-400">
+<span class="truncate">Get Started Now</span>
+</a>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-12 px-4 py-16 @container mt-10">
+<div class="flex flex-col gap-4 text-center">
+<h1 class="text-white tracking-tight text-3xl sm:text-4xl md:text-5xl font-bold leading-tight @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px] mx-auto uppercase" style="font-family: 'Orbitron', sans-serif;">
+                    How <span class="animated-gradient-text">Interviewy</span> Helps You Succeed
+                  </h1>
+<p class="text-[#BDCDDB] text-base sm:text-lg font-normal leading-relaxed max-w-[720px] mx-auto" style="font-family: 'Space Grotesk', sans-serif;">
+                    Our chatbot provides a comprehensive interview preparation experience, covering various aspects of the interview process with cutting-edge AI.
+                  </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 p-0">
+<div class="flex flex-1 gap-4 rounded-xl border border-slate-700/70 bg-slate-800/50 p-6 flex-col card-hover-effect backdrop-blur-sm">
+<div class="text-[#60A5FA] mb-2" data-icon="Robot" data-size="36px" data-weight="regular">
+<svg fill="currentColor" height="36px" viewBox="0 0 256 256" width="36px" xmlns="http://www.w3.org/2000/svg">
+<path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-28,16v24H120V152ZM80,164a12,12,0,0,1,12-12h12v24H92A12,12,0,0,1,80,164Zm84,12H152V152h12a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-xl sm:text-2xl font-bold leading-tight uppercase" style="font-family: 'Orbitron', sans-serif;">AI-Powered Simulations</h2>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed" style="font-family: 'Space Grotesk', sans-serif;">
+                        Practice with realistic interview simulations tailored to your industry and role. Our AI adapts to your performance, providing a dynamic and challenging experience.
+                      </p>
+</div>
+</div>
+<div class="flex flex-1 gap-4 rounded-xl border border-slate-700/70 bg-slate-800/50 p-6 flex-col card-hover-effect backdrop-blur-sm">
+<div class="text-[#60A5FA] mb-2" data-icon="PresentationChart" data-size="36px" data-weight="regular">
+<svg fill="currentColor" height="36px" viewBox="0 0 256 256" width="36px" xmlns="http://www.w3.org/2000/svg">
+<path d="M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,136H40V56H216V176ZM104,120v24a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32-16v40a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v56a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-xl sm:text-2xl font-bold leading-tight uppercase" style="font-family: 'Orbitron', sans-serif;">Personalized Feedback</h2>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed" style="font-family: 'Space Grotesk', sans-serif;">
+                        Receive detailed feedback on your answers, including areas for improvement and suggestions for better responses. Track your progress and identify your strengths and weaknesses.
+                      </p>
+</div>
+</div>
+<div class="flex flex-1 gap-4 rounded-xl border border-slate-700/70 bg-slate-800/50 p-6 flex-col card-hover-effect backdrop-blur-sm">
+<div class="text-[#60A5FA] mb-2" data-icon="UsersThree" data-size="36px" data-weight="regular">
+<svg fill="currentColor" height="36px" viewBox="0 0 256 256" width="36px" xmlns="http://www.w3.org/2000/svg">
+<path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-xl sm:text-2xl font-bold leading-tight uppercase" style="font-family: 'Orbitron', sans-serif;">Expert Guidance</h2>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed" style="font-family: 'Space Grotesk', sans-serif;">
+                        Access expert tips and guidance on common interview questions, behavioral questions, and technical assessments. Learn how to effectively communicate your skills and experience.
+                      </p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Customer Review Section Start -->
+<div class="flex flex-col gap-12 px-4 py-16 @container bg-slate-900/60 rounded-2xl shadow-xl my-10 border border-slate-700/50 backdrop-blur-sm">
+  <div class="flex flex-col gap-4 text-center">
+    <h1 class="text-white tracking-tight text-3xl sm:text-4xl md:text-5xl font-bold leading-tight @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px] mx-auto uppercase" style="font-family: 'Orbitron', sans-serif;">
+      What Our <span class="animated-gradient-text">Customers Say</span>
+    </h1>
+    <p class="text-[#BDCDDB] text-base sm:text-lg font-normal leading-relaxed max-w-[720px] mx-auto" style="font-family: 'Space Grotesk', sans-serif;">
+      Hear from some of the users who have transformed their interview game with Interviewy!
+    </p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+    <div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-800/70 border border-slate-700/50 card-hover-effect">
+      <div class="p-6 flex flex-col items-center text-center">
+        <div class="mb-3">
+          <img class="rounded-full border-2 border-blue-400 shadow-lg" 
+            src="https://images.pexels.com/photos/1707828/pexels-photo-1707828.jpeg?auto=compress&w=200&h=200&fit=crop" 
+            alt="Ayesha K Pakistani review" width="64" height="64"/>
+        </div>
+        <div class="mb-2 flex justify-center">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="text-[#E0E7FF] text-base font-semibold" style="font-family: 'Orbitron', sans-serif;">Ayesha K.</p>
+        <p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-2" style="font-family: 'Space Grotesk', sans-serif;">
+          “Interviewy felt just like a real interview! The feedback was so spot on that I landed my first job within two weeks. Highly recommend for anyone who wants to practice in a safe space.”
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-800/70 border border-slate-700/50 card-hover-effect">
+      <div class="p-6 flex flex-col items-center text-center">
+        <div class="mb-3">
+          <img class="rounded-full border-2 border-purple-400 shadow-lg" 
+            src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&w=200&h=200&fit=crop" 
+            alt="Shoaib H Pakistani review" width="64" height="64"/>
+        </div>
+        <div class="mb-2 flex justify-center">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="text-[#E0E7FF] text-base font-semibold" style="font-family: 'Orbitron', sans-serif;">Shoaib H.</p>
+        <p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-2" style="font-family: 'Space Grotesk', sans-serif;">
+          “The behavioral questions library is a lifesaver! Practicing with Interviewy gave me the confidence I needed, and the AI really adapts to your answers.”
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-800/70 border border-slate-700/50 card-hover-effect">
+      <div class="p-6 flex flex-col items-center text-center">
+        <div class="mb-3">
+          <img class="rounded-full border-2 border-pink-400 shadow-lg" 
+            src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&w=200&h=200&fit=crop"
+            alt="Mahnoor R Pakistani review" width="64" height="64"/>
+        </div>
+        <div class="mb-2 flex justify-center">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="text-[#E0E7FF] text-base font-semibold" style="font-family: 'Orbitron', sans-serif;">Mahnoor R.</p>
+        <p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-2" style="font-family: 'Space Grotesk', sans-serif;">
+          “The technical challenges helped me brush up my coding skills. The interface is fun and futuristic, and I loved the instant feedback!”
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Customer Review Section End -->
+
+<div class="flex flex-col gap-12 px-4 py-16 @container bg-slate-800/60 rounded-2xl shadow-xl my-10 border border-slate-700/50 backdrop-blur-sm">
+<div class="flex flex-col gap-4 text-center">
+<h1 class="text-white tracking-tight text-3xl sm:text-4xl md:text-5xl font-bold leading-tight @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px] mx-auto uppercase" style="font-family: 'Orbitron', sans-serif;">
+                    Practice Makes <span class="animated-gradient-text">Perfect</span>
+</h1>
+<p class="text-[#BDCDDB] text-base sm:text-lg font-normal leading-relaxed max-w-[720px] mx-auto" style="font-family: 'Space Grotesk', sans-serif;">
+                    Our chatbot offers a variety of practice scenarios to help you build confidence and improve your interview skills.
+                  </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+<div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-900/70 border border-slate-700/50 card-hover-effect">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover relative group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVA_xX56-Rc3feoaepUuQsE62Wsmo2dP0jgr0Ml6Cl2ezfnV0yBYbxjOHZxwqFO3OUjScm6vIKUqDBJblloULxERMIax6Ut3jVjs9C8rzgTg1w5PKkwtnwwjL8svXgiorBIQRWzmCO9KQ4W4FKdV4CiWUTADeqQ9RZMOmYpl4uHy0fe5WbvMLNjkOB9c1YjJJA57ClJ9-puV4vPhpVWhKSJyPVGDBqXte_P0LOQ5TjtQSedQj-ngKvitbhiNJrbp3Sd8qDZ5ezzGo");'>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+</div>
+<div class="p-4">
+<p class="text-white text-lg font-semibold leading-normal uppercase" style="font-family: 'Orbitron', sans-serif;">Mock Interviews</p>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-1" style="font-family: 'Space Grotesk', sans-serif;">
+                        Simulate real interview environments with our mock interview feature. Practice answering common interview questions and receive instant feedback on your performance.
+                      </p>
+</div>
+</div>
+<div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-900/70 border border-slate-700/50 card-hover-effect">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover relative group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCgWXIzxa7tNJemb4zpiWwbnKi9ZDUFmUKOVdEIIT0r95y4dQPRuEfuh852sgo-X6g7pkp5FYCIxG3eDCBN-y6syT9hYIgm7TQRhWAdZB_MC-b_1nfXf1J91G8BNjB0vvLP6Yy6br-665u80cKjjdi-2AnnZ9xtliSOzjF6d1ypbKt8K3l7QdshKRv_CnZzexRBHu96c21V2yq8xXEl-FHIdYDLJy-Jma5BFwNYiiCmZlnQ2Z60Xx1wfpp5EBoxDOkKEQeKfDm_EOg");'>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+</div>
+<div class="p-4">
+<p class="text-white text-lg font-semibold leading-normal uppercase" style="font-family: 'Orbitron', sans-serif;">Behavioral Questions</p>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-1" style="font-family: 'Space Grotesk', sans-serif;">
+                        Prepare for behavioral questions with our extensive library of questions and sample answers. Learn how to effectively showcase your skills and experience.
+                      </p>
+</div>
+</div>
+<div class="flex flex-col gap-4 pb-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-slate-900/70 border border-slate-700/50 card-hover-effect">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover relative group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOf3F2s31pnj7IYqhIcn6x9B40ZGL-xrfZeW-9SsGi2sdEVyCtdVOTMZPYiP8ULs-T9VKf5N_JAtnuivHMW6N7QXufV17P_gwazp86pJOSPM7EhFSly0UhbvTeWT3oJo9O-eyTQ5VdFwY8b_36uQg9qqn9TB-OlTcVy0098q7aKYaHWUBcLu-joGOcH-B3gccIONpMzSCsJ_gCGAAmE4mkVj-Js04WdZ5cHaQoRHGSX9prT_jjWoNPQkkDETgeNl6iarX414hArOE");'>
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+</div>
+<div class="p-4">
+<p class="text-white text-lg font-semibold leading-normal uppercase" style="font-family: 'Orbitron', sans-serif;">Technical Assessments</p>
+<p class="text-[#BDCDDB] text-sm font-normal leading-relaxed mt-1" style="font-family: 'Space Grotesk', sans-serif;">
+                        Sharpen your technical skills with our technical assessment feature. Practice coding challenges and receive feedback on your solutions.
+                      </p>
+</div>
+</div>
+</div>
+</div>
+<div class="@container">
+<div class="flex flex-col justify-end gap-8 px-4 py-16 @[480px]:gap-10 @[480px]:px-10 @[480px]:py-24 text-center">
+<div class="flex flex-col gap-4">
+<h1 class="text-white tracking-tight text-3xl sm:text-4xl md:text-5xl font-bold leading-tight @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px] mx-auto uppercase" style="font-family: 'Orbitron', sans-serif;">
+                      Ready to Land Your <span class="animated-gradient-text">Dream Job?</span>
+</h1>
+<p class="text-[#BDCDDB] text-base sm:text-lg font-normal leading-relaxed max-w-[720px] mx-auto" style="font-family: 'Space Grotesk', sans-serif;">
+                      Start practicing with Interviewy today and take the first step towards a successful career.
+                    </p>
+</div>
+<div class="flex flex-1 justify-center">
+<div class="flex justify-center">
+<a href="/home.html" class="flex min-w-[100px] sm:min-w-[120px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 sm:h-14 px-6 sm:px-8 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-base sm:text-lg font-bold leading-normal tracking-[0.015em] hover:from-purple-700 hover:to-pink-700 transition-all duration-300 grow shadow-xl hover:shadow-2xl glow-effect button-hover-effect border border-transparent hover:border-purple-400">
+<span class="truncate">Get Started for Free</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="flex justify-center border-t border-solid border-t-slate-700/50 mt-10 bg-slate-900/30 backdrop-blur-sm">
+<div class="flex max-w-[960px] flex-1 flex-col">
+<footer class="flex flex-col gap-8 px-5 py-12 text-center @container">
+<div class="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-4 @[480px]:flex-row @[480px]:justify-around">
+<a class="text-[#BDCDDB] text-sm font-normal leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group" href="/home.html">
+                    Home
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<!-- About and Contact are hidden for layout consistency -->
+<a class="text-[#BDCDDB] text-sm font-normal leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group hidden" href="#">
+                    About
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<a class="text-[#BDCDDB] text-sm font-normal leading-normal hover:text-[#60A5FA] transition-colors duration-300 relative group hidden" href="#">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#60A5FA] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+</a>
+<!-- Terms of Service and Privacy Policy removed as requested -->
+</div>
+<p class="text-[#94A3B8] text-sm font-normal leading-normal" style="font-family: 'Space Grotesk', sans-serif;">© 2024 Interviewy. All rights reserved.</p>
+</footer>
+</div>
+</footer>
+</div>
+</div>
+</body>
+</html>

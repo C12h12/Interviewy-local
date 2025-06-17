@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Interviewy - Results</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        body {
+            background: linear-gradient(145deg, rgba(0, 8, 18, 0.97) 0%, rgba(3, 12, 28, 0.92) 50%, rgba(0, 8, 18, 0.97) 100%);
+            background-blend-mode: multiply, normal;
+            animation: futuristicBackground 25s ease-in-out infinite alternate;
+            background-size: 250% 250%;
+        }
+        @keyframes futuristicBackground {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        .glassmorphic {
+            background: rgba(10, 20, 35, 0.65);
+            backdrop-filter: blur(15px) saturate(180%);
+            border: 1px solid rgba(0, 191, 255, 0.15);
+        }
+        .scrollbar-custom::-webkit-scrollbar { width: 6px; }
+        .scrollbar-custom::-webkit-scrollbar-track { background: rgba(0, 25, 50, 0.3); }
+        .scrollbar-custom::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #00bbee, #0077bb); }
+        .resource-link {
+            color: #00d6ff;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .resource-link:hover {
+            color: #34d399;
+        }
+        .home-btn-link {
+            color: inherit;
+            text-decoration: none;
+        }
+        .home-btn-link:visited {
+            color: inherit;
+        }
+    </style>
+</head>
+<body class="bg-[#000a1a] text-[#e0f2fe] font-sans">
+<div class="relative flex min-h-screen flex-col">
+    <header class="sticky top-0 bg-gray-900/50 backdrop-blur-md p-4 shadow flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-[#00bfff]">Interview Results</h1>
+        <a href="home.html" id="goHomeBtn" class="text-[#00bfff] hover:text-white home-btn-link">
+            <span class="material-icons-outlined">home</span>
+        </a>
+    </header>
+    <main class="flex-1 flex flex-col items-center py-8 px-4">
+        <div class="glassmorphic p-6 sm:p-10 rounded-lg w-full max-w-4xl">
+            <h2 class="text-3xl font-bold text-[#00d6ff] text-center mb-8">Your Interview Performance</h2>
+            <div class="mb-8 text-center">
+                <p id="scoreDisplay" class="text-2xl font-semibold text-[#e0f2fe]">Score: Loading...</p>
+                <p id="feedbackDisplay" class="text-lg text-[#bbeeff] mt-2">Feedback: Loading...</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-8">
+                <div class="bg-gray-800/50 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-[#00c6ff] mb-2">Recommended Resources</h3>
+                    <ul id="resourcesList" class="list-disc list-inside space-y-2 text-sm text-[#bbeeff]">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-gray-800/50 p-4 rounded-lg mb-8">
+                <h3 class="text-xl font-semibold text-[#00c6ff] mb-2">Question Breakdown</h3>
+                <div id="questionsList" class="space-y-4 max-h-[50vh] overflow-y-auto scrollbar-custom pr-2">
+                    <p class="text-sm text-[#bbeeff]">Loading questions...</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <button id="downloadReportBtn" class="p-2 rounded bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-500 hover:to-blue-700">
+                    Download Report as PDF <span class="material-icons-outlined ml-1">download</span>
+                </button>
+                <p id="pdfStatus" class="text-center mt-4 text-[#00bfff]"></p>
+                <a href="home.html" id="goHomeBtn" class="mt-8 p-2 rounded bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-400 hover:to-blue-600 home-btn-link flex items-center justify-center">
+                    Go to Home Page <span class="material-icons-outlined ml-1">home</span>
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+const API_BASE = "http://127.0.0.1:5000/api";
+const interviewId = new URLSearchParams(window.location.search).get('interviewId');
+let intervieweeEmail = "";
+
+function handlePageNotFound(errorMsg) {
+    alert(errorMsg || "Sorry, the page you are looking for cannot be found. You will be redirected to the Home page.");
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 1000);
+}
+
+function filterWebLinks(resources) {
+    if (!resources) return [];
+    return resources.filter(r =>
+        r.url &&
+        !/youtube\.com|youtu\.be|vimeo\.com|\.mp4|\.webm/.test(r.url) &&
+        /^https?:\/\//.test(r.url)
+    );
+}
+
+async function loadResults() {
+    if (!interviewId) {
+        handlePageNotFound('No interview ID found. You will be redirected to the Home page.');
+        return;
+    }
+    localStorage.setItem(`interview_completed_${interviewId}`, "true");
+    try {
+        const res = await fetch(`${API_BASE}/interview_result?interview_id=${interviewId}`);
+        if (!res.ok) {
+            if (res.status === 404) {
+                handlePageNotFound('Results page not found for this interview. You will be redirected to the Home page.');
+                return;
+            }
+            throw new Error(`Server error: ${res.statusText}`);
+        }
+        const data = await res.json();
+        intervieweeEmail = data.email || "";
+        document.getElementById('scoreDisplay').textContent = `Score: ${data.score} / ${data.total_questions}`;
+        document.getElementById('feedbackDisplay').textContent = `Feedback: ${data.feedback || "No feedback available."}`;
+        let webResources = filterWebLinks(data.resources);
+        if (Array.isArray(webResources) && webResources.length) {
+            document.getElementById('resourcesList').innerHTML = webResources.map(r =>
+                `<li>
+                    <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="resource-link">${r.title}</a>
+                    ${r.desc ? `<span class="ml-1 text-[#8cf5e8]">- ${r.desc}</span>` : ""}
+                </li>`
+            ).join('');
+        } else {
+            document.getElementById('resourcesList').innerHTML = '<li>No relevant web resources available.</li>';
+        }
+        document.getElementById('questionsList').innerHTML = data.questions && data.questions.length
+            ? data.questions.map((q, idx) => `
+                <div class="bg-gray-900/30 p-3 rounded">
+                    <p class="text-sm font-medium text-[#e0f2fe]">Question ${idx + 1}: ${q.question_text}</p>
+                    <p class="text-xs text-[#bbeeff] mt-1">Your Answer: ${q.user_answer || '[No answer]'}</p>
+                    <p class="text-xs text-[#bbeeff] mt-1">Model Answer: ${q.answer}</p>
+                    <p class="text-xs text-[#00c6ff] mt-1">Points: ${q.points || 0}</p>
+                </div>
+            `).join('')
+            : '<p class="text-sm text-[#bbeeff]">No questions available.</p>';
+    } catch (err) {
+        handlePageNotFound(`Error: ${err.message}. You will be redirected to the Home page.`);
+    }
+}
+
+document.getElementById('downloadReportBtn').addEventListener('click', async () => {
+    const pdfStatus = document.getElementById('pdfStatus');
+    pdfStatus.textContent = 'Generating PDF...';
+    if (!intervieweeEmail) {
+        pdfStatus.textContent = 'Email not found. Please restart from the home page.';
+        return;
+    }
+    try {
+        const res = await fetch(`${API_BASE}/generate_pdf`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ interview_id: interviewId, email: intervieweeEmail })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to generate PDF');
+        pdfStatus.textContent = 'PDF generated and emailed successfully!';
+    } catch (err) {
+        pdfStatus.textContent = `Error: ${err.message}`;
+    }
+});
+
+document.getElementById('goHomeBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.href = 'home.html';
+});
+
+window.addEventListener('DOMContentLoaded', loadResults);
+</script>
+</body>
+</html>
