@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="screenshots/banner.png" alt="Interviewy Banner" width="80%" style="border-radius:16px;box-shadow:0px 2px 16px #00bfff44;">
-</p>
 
 <h1 align="center">🚀 Interviewy – AI Interview Preparation Chatbot</h1>
 <h3 align="center">Your Complete AI-Powered Mock Interview & Career Prep Platform</h3>
