@@ -490,13 +490,25 @@ async function handleSend(userAnswer) {
     totalScore = grading.total_score || (totalScore + grading.points);
     document.querySelectorAll('.msg-feedback').forEach(e => e.remove());
     document.querySelectorAll('.msg-score').forEach(e => e.remove());
+
+    // Always show feedback (this might be "Here’s a hint...")
     addMessage("bot", grading.feedback || "No feedback.", "feedback");
-    addMessage("bot", `<b>Correct Answer:</b> ${grading.correct_answer || q.correct_answer || "N/A"}`, "feedback");
-    addMessage("bot", `<b>You scored:</b> ${grading.points} point${grading.points===1?"":"s"} for this answer.`, "score");
+
+    // 🔑 Only show correct answer if backend actually included it
+    if (grading.correct_answer) {
+        addMessage("bot", `<b>Correct Answer:</b> ${grading.correct_answer}`, "feedback");
+    }
+
+    // Show score if points were given
+    if (grading.points !== undefined) {
+        addMessage("bot", `<b>You scored:</b> ${grading.points} point${grading.points===1?"":"s"} for this answer.`, "score");
+    }
+
     currentQuestionIndex++;
     setTimeout(() => askQuestion(), 900);
     if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 900);
 }
+
 
 async function handleSkip() {
     if (isViewingHistory || interviewEndedForCheating || interviewReallyEnded) return;
