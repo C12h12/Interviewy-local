@@ -278,6 +278,7 @@
     <button id="viewFullReportBtn" class="hidden p-3 rounded bg-gradient-to-r from-blue-700 to-blue-900 text-white text-lg font-semibold shadow-lg transition-all duration-200">View Full Report <span class="material-icons-outlined ml-1">arrow_forward</span></button>
 </div>
 <script>
+
 const interviewId = new URLSearchParams(window.location.search).get('interviewId');
 // Updated: Redirect to result.html instead of /InterviewyApp/result.html
 if (interviewId && localStorage.getItem(`interview_completed_${interviewId}`) === "true") {
@@ -481,33 +482,72 @@ async function gradeAnswerBackend(userAnswer, questionIdx) {
     }
 }
 
+
 async function handleSend(userAnswer) {
+    let dontKnowCount = {}; // Track "don't know" attempts per question
+
     if (!userAnswer.trim() || isViewingHistory || interviewEndedForCheating || interviewReallyEnded) return;
+
     const q = questions[currentQuestionIndex];
     addMessage("user", userAnswer);
     addMessage("bot", "<i>Assessing your answer...</i>", "feedback");
+
     const grading = await gradeAnswerBackend(userAnswer, currentQuestionIndex);
+
     totalScore = grading.total_score || (totalScore + grading.points);
+
+    // Clear old feedback/score messages
     document.querySelectorAll('.msg-feedback').forEach(e => e.remove());
     document.querySelectorAll('.msg-score').forEach(e => e.remove());
 
-    // Always show feedback (this might be "Here’s a hint...")
-    addMessage("bot", grading.feedback || "No feedback.", "feedback");
+    // === NEW LOGIC: Detect hint-only response (from backend) ===
+    const isHintOnly = !grading.correct_answer && (!grading.points || grading.points === 0);
 
-    // 🔑 Only show correct answer if backend actually included it
-    if (grading.correct_answer) {
-        addMessage("bot", `<b>Correct Answer:</b> ${grading.correct_answer}`, "feedback");
+    if (isHintOnly) {
+        // Count "don't know" attempts for this question
+        dontKnowCount[currentQuestionIndex] = (dontKnowCount[currentQuestionIndex] || 0) + 1;
+
+        if (dontKnowCount[currentQuestionIndex] >= 2) {
+            // ✅ Second failure → ONLY show correct answer, then move on
+            addMessage("bot", `<b>Correct Answer:</b> ${questions[currentQuestionIndex].answer}`, "feedback");
+
+            dontKnowCount[currentQuestionIndex] = 0; // reset for next q
+
+            currentQuestionIndex++;
+            setTimeout(() => askQuestion(), 900);
+            if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 900);
+        } else {
+            // 👀 First failure → show only the hint, stay on same question
+            addMessage("bot", grading.feedback || "Here’s a hint!", "feedback");
+        }
+    } else {
+        // ✅ Normal answer → reset tracker
+        dontKnowCount[currentQuestionIndex] = 0;
+
+        // Always show feedback from backend
+        addMessage("bot", grading.feedback || "No feedback.", "feedback");
+
+        // Show correct answer if backend included it
+        if (grading.correct_answer) {
+            addMessage("bot", `<b>Correct Answer:</b> ${grading.correct_answer}`, "feedback");
+        }
+
+        // Show score if points were given
+        if (grading.points !== undefined && grading.points > 0) {
+            addMessage(
+                "bot",
+                `<b>You scored:</b> ${grading.points} point${grading.points === 1 ? "" : "s"} for this answer.`,
+                "score"
+            );
+        }
+
+        currentQuestionIndex++;
+        setTimeout(() => askQuestion(), 900);
+        if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 900);
     }
-
-    // Show score if points were given
-    if (grading.points !== undefined) {
-        addMessage("bot", `<b>You scored:</b> ${grading.points} point${grading.points===1?"":"s"} for this answer.`, "score");
-    }
-
-    currentQuestionIndex++;
-    setTimeout(() => askQuestion(), 900);
-    if (currentQuestionIndex >= questions.length) setTimeout(() => endInterview(), 900);
 }
+
+
 
 
 async function handleSkip() {

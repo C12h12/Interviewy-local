@@ -350,7 +350,7 @@ def answer_question():
     correct_answer = question['answer']
 
     # === NEW FEATURE: Show hint if user says "I don't know" or similar ===
-    dont_know_phrases = ["i don't know", "dont know", "idk", "not sure", "no idea"]
+    dont_know_phrases = ["i don't know", "dont know", "idk", "not sure", "no idea","hint","help","new hint"]
 
     if not answer.strip() or any(phrase in answer.lower() for phrase in dont_know_phrases):
         try:
@@ -369,7 +369,7 @@ def answer_question():
         conn.close()
         return jsonify({
             "points": 0.0,
-            "feedback": "Here’s a hint:\n" + hint,
+            "feedback": "Try again with this hint💡:\n" + hint,
             "hint": hint,
             "total_score": 0
         })
