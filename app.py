@@ -122,6 +122,33 @@ def difficulty_template(difficulty):
         return "Require deep technical knowledge, critical thinking, and synthesis. Answers may involve multiple steps, explanations, or examples."
     else:
         return "Use an appropriate general difficulty."
+    
+def handle_off_topic_answer(question, user_answer, correct_answer):
+    """
+    Detects if the user's answer is off-topic (like asking a question instead of answering).
+    If so, the bot will answer their off-topic query and then bring them back to the interview.
+    """
+    # Check: if user answer looks like a question (off-topic)
+    if user_answer.strip().endswith("?") or user_answer.lower().startswith(("what", "why", "how", "when", "where")):
+        try:
+            # Use Gemini to answer the off-topic query
+            prompt = (
+                f"The candidate asked an off-topic question during an interview.\n"
+                f"Off-topic Question: {user_answer}\n\n"
+                "Answer their question briefly and then politely bring them back to the original interview question:\n"
+                f"'{question}'"
+            )
+            response = gemini_model.generate_content(prompt)
+            reply_text = response.text.strip()
+            return {
+                "is_off_topic": True,
+                "reply": reply_text
+            }
+        except Exception as e:
+            print("Off-topic handling error:", e)
+            return {"is_off_topic": False}
+    return {"is_off_topic": False}
+
 
 def fetch_questions_gemini(major, degree_level, difficulty):
     deg_temp = degree_template(degree_level)
@@ -316,6 +343,19 @@ def answer_question():
         conn.close()
         return jsonify({"error": "Question not found"}), 404
     correct_answer = question['answer']
+
+        # === NEW FEATURE: Handle off-topic answers ===
+    off_topic_result = handle_off_topic_answer(question['question_text'], answer, correct_answer)
+    if off_topic_result["is_off_topic"]:
+        cursor.close()
+        conn.close()
+        return jsonify({
+            "points": 0.0,
+            "feedback": off_topic_result["reply"],
+            "correct_answer": correct_answer,
+            "total_score": total_score if 'total_score' in locals() else 0
+        })
+
 
     points, feedback = gemini_smart_score(question['question_text'], answer, correct_answer)
     points = max(0, min(1.0, round(points, 2)))  # Ensure within [0, 1]
