@@ -16,8 +16,7 @@ import tempfile
 import os
 
 # === API KEYS & CONFIG ===
-GEMINI_API_KEY = "AIzaSyDd1snCP08oE20AnfKbHP4VzBob4ac-i6g"
-#GEMINI_API_KEY="AIzaSyBFOHK4MZDcb59oMyEIzaAiNLulz9CvQro"
+GEMINI_API_KEY="AIzaSyCGyXkHSSlu34jPHe5dP9V-4ZgyukgPpOs"
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
@@ -334,17 +333,49 @@ def answer_question():
     answer = data.get("answer", "")
     if interview_id is None or question_index is None:
         return jsonify({"error": "Missing interview_id or question_index"}), 400
+
     conn = mysql.connector.connect(database=DB_NAME, **DB_CONFIG)
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM questions WHERE interview_id=%s ORDER BY id LIMIT %s,1", (interview_id, question_index))
+
+    cursor.execute(
+        "SELECT * FROM questions WHERE interview_id=%s ORDER BY id LIMIT %s,1",
+        (interview_id, question_index)
+    )
     question = cursor.fetchone()
     if not question:
         cursor.close()
         conn.close()
         return jsonify({"error": "Question not found"}), 404
+
     correct_answer = question['answer']
 
-        # === NEW FEATURE: Handle off-topic answers ===
+    # === NEW FEATURE: Show hint if user says "I don't know" or similar ===
+    dont_know_phrases = ["i don't know", "dont know", "idk", "not sure", "no idea"]
+
+    if not answer.strip() or any(phrase in answer.lower() for phrase in dont_know_phrases):
+        try:
+            # Ask Gemini to generate a hint based on the correct answer
+            hint_prompt = f"""
+            The correct answer is: "{correct_answer}".
+            Generate a concise, beginner-friendly hint (1–2 lines) 
+            that guides the user towards this answer without fully revealing it.
+            """
+            hint_response = gemini_model.generate_content(hint_prompt)
+            hint = hint_response.text.strip()
+        except Exception as e:
+            hint = "Think about the key concept related to this topic."
+
+        cursor.close()
+        conn.close()
+        return jsonify({
+            "points": 0.0,
+            "feedback": "Here’s a hint:\n" + hint,
+            "hint": hint,
+            "total_score": 0
+        })
+
+
+    # === EXISTING FEATURE: Handle off-topic answers ===
     off_topic_result = handle_off_topic_answer(question['question_text'], answer, correct_answer)
     if off_topic_result["is_off_topic"]:
         cursor.close()
@@ -353,27 +384,35 @@ def answer_question():
             "points": 0.0,
             "feedback": off_topic_result["reply"],
             "correct_answer": correct_answer,
-            "total_score": total_score if 'total_score' in locals() else 0
+            "total_score": 0
         })
 
-
+    # === Existing scoring logic ===
     points, feedback = gemini_smart_score(question['question_text'], answer, correct_answer)
     points = max(0, min(1.0, round(points, 2)))  # Ensure within [0, 1]
 
-    cursor.execute("UPDATE questions SET user_answer=%s, points=%s WHERE id=%s", (answer, points, question['id']))
+    cursor.execute(
+        "UPDATE questions SET user_answer=%s, points=%s WHERE id=%s",
+        (answer, points, question['id'])
+    )
     conn.commit()
+
     cursor.execute("SELECT SUM(points) AS total_score FROM questions WHERE interview_id=%s", (interview_id,))
     total_score = cursor.fetchone()["total_score"] or 0
+
     cursor.execute("UPDATE interviews SET score=%s WHERE id=%s", (total_score, interview_id))
     conn.commit()
+
     cursor.close()
     conn.close()
+
     return jsonify({
         "points": points,
         "feedback": feedback,
         "correct_answer": correct_answer,
         "total_score": total_score
     })
+
 
 @app.route('/api/skip_question', methods=['POST'])
 def skip_question():
